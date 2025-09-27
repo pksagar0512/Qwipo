@@ -10,7 +10,8 @@ import Partners from "./pages/Partners.jsx";
 import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
-import Profile from "./pages/Profile.jsx"; // ✅ Added
+import Profile from "./pages/Profile.jsx";
+import BrandProducts from "./pages/BrandProducts.jsx"; // ✅ New
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} /> {/* ✅ Added */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/brand/:brandName" element={<BrandProducts />} /> {/* ✅ New */}
         </Routes>
       </MainLayout>
     </Router>

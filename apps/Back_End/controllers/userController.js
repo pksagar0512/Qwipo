@@ -14,10 +14,11 @@ export const preRegisterUser = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpires = Date.now() + 5 * 60 * 1000;
 
-    // Temporarily store user data in memory (for demo purposes)
-    req.app.locals.pendingUser = { name, email, password, whatsapp, otp, otpExpires };
+    const fullNumber = whatsapp.startsWith('+91') ? whatsapp : `+91${whatsapp}`;
 
-    await sendOtpSMS(whatsapp, otp);
+    req.app.locals.pendingUser = { name, email, password, whatsapp: fullNumber, otp, otpExpires };
+
+    await sendOtpSMS(fullNumber, otp);
 
     res.json({ message: 'OTP sent. Please verify to complete registration.' });
   } catch (error) {
@@ -47,7 +48,7 @@ export const verifyOtp = async (req, res) => {
       whatsapp: pending.whatsapp,
     });
 
-    await sendWhatsAppMessage(user.whatsapp, user.name);
+    await sendWhatsAppMessage(pending.whatsapp, user.name);
 
     req.app.locals.pendingUser = null;
 
@@ -65,27 +66,60 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-// ✅ Login user
+// ✅ Step 3: Login → Send OTP via SMS
 export const authUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
 
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        whatsapp: user.whatsapp,
-        token: generateToken(user._id),
-        message: `Welcome back, ${user.name}!`,
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpires = Date.now() + 5 * 60 * 1000;
+
+    const fullNumber = user.whatsapp.startsWith('+91') ? user.whatsapp : `+91${user.whatsapp}`;
+
+    req.app.locals.pendingLogin = { email, otp, otpExpires };
+
+    await sendOtpSMS(fullNumber, otp);
+
+    res.json({ message: 'OTP sent via SMS. Please verify to complete login.' });
   } catch (error) {
     console.error('❌ Login error:', error.message);
     res.status(500).json({ message: 'Server error during login' });
+  }
+};
+
+// ✅ Step 4: Verify login OTP and complete login
+export const verifyLoginOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const pending = req.app.locals.pendingLogin;
+
+    if (!pending || pending.email !== email) {
+      return res.status(400).json({ message: 'No pending login found' });
+    }
+
+    if (pending.otp !== otp || Date.now() > pending.otpExpires) {
+      return res.status(401).json({ message: 'Invalid or expired OTP' });
+    }
+
+    const user = await User.findOne({ email });
+
+    req.app.locals.pendingLogin = null;
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      whatsapp: user.whatsapp,
+      token: generateToken(user._id),
+      message: `Welcome back, ${user.name}!`,
+    });
+  } catch (error) {
+    console.error('❌ OTP verification error:', error.message);
+    res.status(500).json({ message: 'Server error during OTP verification' });
   }
 };
