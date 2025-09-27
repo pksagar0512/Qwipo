@@ -150,7 +150,7 @@ const About = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 text-gray-300">
           <div className="text-center bg-gray-800 p-6 rounded-3xl shadow-lg">
             <img
-              src="/images/siva-morisetti.jpg"
+              src="https://qwipo.com/assets/siva2.jpeg"
               alt="Siva Morisetti"
               className="w-32 h-32 rounded-full mx-auto shadow-lg"
             />
@@ -159,7 +159,7 @@ const About = () => {
           </div>
           <div className="text-center bg-gray-800 p-6 rounded-3xl shadow-lg">
             <img
-              src="/images/siva-mamidi.jpg"
+              src="https://qwipo.com/assets/siva1.jpeg"
               alt="Siva Mamidi"
               className="w-32 h-32 rounded-full mx-auto shadow-lg"
             />
