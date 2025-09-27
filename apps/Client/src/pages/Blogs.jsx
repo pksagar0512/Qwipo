@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState(() => {
+    // Load from localStorage on first render
+    const saved = localStorage.getItem("blogs");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [showForm, setShowForm] = useState(false);
   const [newBlog, setNewBlog] = useState({ title: "", description: "", photo: "" });
   const [selectedBlog, setSelectedBlog] = useState(null);
 
+  // Save blogs to localStorage whenever blogs change
+  useEffect(() => {
+    localStorage.setItem("blogs", JSON.stringify(blogs));
+  }, [blogs]);
+
   const handleAddBlog = () => {
-    // Prevent empty posts (must have at least title or description)
+    // Prevent empty posts
     if (newBlog.title.trim() || newBlog.description.trim() || newBlog.photo.trim()) {
-      setBlogs([{ ...newBlog }, ...blogs]);
+      const updated = [{ ...newBlog }, ...blogs];
+      setBlogs(updated);
       setNewBlog({ title: "", description: "", photo: "" });
       setShowForm(false);
     }
@@ -42,11 +53,8 @@ const Blogs = () => {
               />
             )}
             <h2 className="text-xl font-semibold">{blog.title}</h2>
-
-            {/* Show only 2 lines */}
             <p className="mt-2 line-clamp-2">{blog.description}</p>
 
-            {/* Read More if text is long */}
             {blog.description.length > 80 && (
               <button
                 onClick={() => setSelectedBlog(blog)}
