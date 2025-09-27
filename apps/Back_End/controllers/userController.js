@@ -14,10 +14,13 @@ export const preRegisterUser = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpires = Date.now() + 5 * 60 * 1000;
 
-    // Temporarily store user data in memory (for demo purposes)
-    req.app.locals.pendingUser = { name, email, password, whatsapp, otp, otpExpires };
+    // Format number for Twilio trial (must be +91XXXXXXXXXX)
+    const fullNumber = whatsapp.startsWith('+91') ? whatsapp : `+91${whatsapp}`;
 
-    await sendOtpSMS(whatsapp, otp);
+    // Temporarily store user data in memory (for demo purposes)
+    req.app.locals.pendingUser = { name, email, password, whatsapp: fullNumber, otp, otpExpires };
+
+    await sendOtpSMS(fullNumber, otp);
 
     res.json({ message: 'OTP sent. Please verify to complete registration.' });
   } catch (error) {
@@ -47,7 +50,7 @@ export const verifyOtp = async (req, res) => {
       whatsapp: pending.whatsapp,
     });
 
-    await sendWhatsAppMessage(user.whatsapp, user.name);
+    await sendWhatsAppMessage(pending.whatsapp, user.name);
 
     req.app.locals.pendingUser = null;
 

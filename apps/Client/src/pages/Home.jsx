@@ -1,10 +1,9 @@
-import MainLayout from "../../layouts/MainLayout";
 import Hero from "../components/Hero";
 import FeatureCard from "../components/FeatureCard";
 
 function Home() {
   return (
-    <MainLayout>
+    <>
       <Hero />
 
       <section className="max-w-screen-xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -24,7 +23,7 @@ function Home() {
           desc="Track product trends and demand with live analytics."
         />
       </section>
-    </MainLayout>
+    </>
   );
 }
 

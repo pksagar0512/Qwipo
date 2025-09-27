@@ -6,12 +6,16 @@ dotenv.config();
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 export const sendWhatsAppMessage = async (number, name) => {
+  if (!number.startsWith('+91') || number.length !== 13) {
+    throw new Error('Invalid mobile number format. Use +91XXXXXXXXXX');
+  }
+
   const message = `Hi ${name || 'there'}, welcome to Qwipo! You're now subscribed to product alerts.`;
 
   try {
     const response = await client.messages.create({
-      from: 'whatsapp:+14155238886', // Twilio sandbox number
-      to: `whatsapp:${number}`,       // Recipient number in WhatsApp format
+      from: 'whatsapp:+14155238886',
+      to: `whatsapp:${number}`,
       body: message,
     });
 
