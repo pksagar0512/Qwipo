@@ -23,9 +23,9 @@ import {
   FaApple 
 } from "react-icons/fa";
 
-import { SiGoogleplay as FaGooglePlay } from "react-icons/si"; // Google Play icon
+import { SiGoogleplay as FaGooglePlay } from "react-icons/si"; 
 
-import logo from "../assets/logo.png"; // adjust path if needed
+import logo from "../assets/logo.png"; 
 
 
 import "../styles/services.css";
@@ -100,7 +100,7 @@ const benefits = [
 const Services = () => {
   return (
     <section className="services-section">
-      {/* Services List */}
+      
       <div className="services-container">
         <h2 className="services-heading">Discover the Revolutionary QWIPO Platform</h2>
         <div className="services-list">
@@ -128,7 +128,6 @@ const Services = () => {
     </div>
   </div>
 
-  {/* Second block – Image on left (phoneImage2) */}
   <div className="float-section image-left">
     <div className="image-content">
       <img src={phoneImage2} alt="Customer Mobile App" />
@@ -152,7 +151,6 @@ const Services = () => {
     </div>
   </div>
 
-  {/* Second block – Image on left (phoneImage2) */}
   <div className="floatt-section image-left">
     <div className="imagee-content">
       <img src={phoneImage4} alt="Customer Mobile App" />
@@ -189,10 +187,8 @@ const Services = () => {
         <button className="cta-button">Join Qwipo</button>
       </div>
     
-      {/* Footer */}
 <footer className="footer">
   <div className="footer-container">
-    {/* Left Side */}
     <div className="footer-left">
       <div className="footer-logo">
         <img src={logo} alt="Qwipo Logo" />
@@ -209,7 +205,6 @@ const Services = () => {
       </div>
     </div>
 
-    {/* Middle Links */}
     <div className="footer-links">
       <ul>
         <li><a href="/">Home</a></li>
@@ -226,7 +221,6 @@ const Services = () => {
       </ul>
     </div>
 
-    {/* Address */}
     <div className="footer-address">
       <h3>Address</h3>
       <p><strong>Corporate Office:</strong></p>
@@ -236,7 +230,6 @@ const Services = () => {
       <p>Serilingampally Mandal, R R District.</p>
       <p>Hyderabad Telangana, 500081</p>
 
-      {/* Social Icons */}
       <div className="footer-social">
         <a href="#"><FaLinkedin /></a>
         <a href="#"><FaFacebook /></a>
@@ -249,7 +242,6 @@ const Services = () => {
     </div>
   </div>
 
-  {/* Bottom */}
   <div className="footer-bottom">
     <p>© 2024 Qwipo. All rights reserved</p>
     <p>
