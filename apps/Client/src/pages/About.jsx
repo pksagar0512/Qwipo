@@ -1,4 +1,24 @@
+import React, { useState, useEffect, useRef } from "react";
+
 const About = () => {
+  // Images for the slider
+  const vendorImages = [
+    "https://qwipo.com/assets/customer1.jpeg",
+    "https://qwipo.com/assets/customer2.jpeg",
+    "https://qwipo.com/assets/customer3.jpeg",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const slideInterval = useRef();
+
+  useEffect(() => {
+    slideInterval.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % vendorImages.length);
+    }, 3000); // change slide every 3 seconds
+
+    return () => clearInterval(slideInterval.current);
+  }, [vendorImages.length]);
+
   return (
     <div className="pt-24 px-6 bg-gray-900 text-white min-h-screen space-y-24">
       {/* Heading */}
@@ -83,6 +103,9 @@ const About = () => {
               key={i}
               className="bg-gray-800 rounded-3xl shadow-lg p-8 flex flex-col items-center text-center 
                          hover:shadow-2xl hover:-translate-y-3 transition-transform duration-300"
+              style={{
+                boxShadow: "0 0 15px 5px rgba(99, 102, 241, 0.4)",
+              }}
             >
               <div
                 className={`w-16 h-16 flex items-center justify-center rounded-full ${challenge.color} mb-4`}
@@ -110,11 +133,16 @@ const About = () => {
             market.
           </p>
         </div>
-        <img
-          src="https://qwipo.com/assets/customer1.jpeg"
-          alt="Empowering Vendors"
-          className="flex-1 w-full max-w-xl rounded-3xl shadow-xl"
-        />
+
+        {/* Slider - shows one image at a time and auto changes */}
+        <div className="flex-1 flex justify-center">
+          <img
+            src={vendorImages[currentIndex]}
+            alt={`Empowering Vendor ${currentIndex + 1}`}
+            className="w-full max-w-xl rounded-3xl shadow-xl object-cover transition-opacity duration-700"
+            key={currentIndex}
+          />
+        </div>
       </section>
 
       {/* Mission & Vision */}
