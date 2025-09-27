@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState(() => {
-    // Load from localStorage on first render
     const saved = localStorage.getItem("blogs");
     return saved ? JSON.parse(saved) : [];
   });
@@ -11,13 +10,11 @@ const Blogs = () => {
   const [newBlog, setNewBlog] = useState({ title: "", description: "", photo: "" });
   const [selectedBlog, setSelectedBlog] = useState(null);
 
-  // Save blogs to localStorage whenever blogs change
   useEffect(() => {
     localStorage.setItem("blogs", JSON.stringify(blogs));
   }, [blogs]);
 
   const handleAddBlog = () => {
-    // Prevent empty posts
     if (newBlog.title.trim() || newBlog.description.trim() || newBlog.photo.trim()) {
       const updated = [{ ...newBlog }, ...blogs];
       setBlogs(updated);
