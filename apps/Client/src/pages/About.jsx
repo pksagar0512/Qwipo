@@ -113,7 +113,7 @@ const About = () => {
         <img
           src="https://qwipo.com/assets/customer1.jpeg"
           alt="Empowering Vendors"
-          className="flex-1 w-full max-w-xl rounded-3xl shadow-xl" // size reduced here
+          className="flex-1 w-full max-w-xl rounded-3xl shadow-xl"
         />
       </section>
 
@@ -125,7 +125,8 @@ const About = () => {
         <img
           src="https://qwipo.com/assets/Qwipo-Banner-min.png"
           alt="Mission and Vision"
-          className="w-full max-w-lg mx-auto rounded-3xl shadow-xl"
+          className="w-full max-w-lg mx-auto rounded-3xl shadow-xl 
+                     transition-transform duration-500 hover:scale-110"
         />
         <p className="text-gray-300 text-lg leading-relaxed">
           At Qwipo, our mission is to simplify the supply chain for small and
@@ -152,18 +153,20 @@ const About = () => {
             <img
               src="https://qwipo.com/assets/siva2.jpeg"
               alt="Siva Morisetti"
-              className="w-32 h-32 rounded-full mx-auto shadow-lg"
+              className="w-32 h-32 rounded-full mx-auto shadow-lg 
+                         transition-transform duration-300 hover:-translate-y-2"
             />
-            <h3 className="font-bold text-lg mt-4"></h3>
+            <h3 className="font-bold text-lg mt-4">Siva Morisetti</h3>
             <p>CEO and Co-founder</p>
           </div>
           <div className="text-center bg-gray-800 p-6 rounded-3xl shadow-lg">
             <img
               src="https://qwipo.com/assets/siva1.jpeg"
               alt="Siva Mamidi"
-              className="w-32 h-32 rounded-full mx-auto shadow-lg"
+              className="w-32 h-32 rounded-full mx-auto shadow-lg 
+                         transition-transform duration-300 hover:-translate-y-2"
             />
-            <h3 className="font-bold text-lg mt-4"></h3>
+            <h3 className="font-bold text-lg mt-4">Siva Mamidi</h3>
             <p>CTO and Co-founder</p>
           </div>
         </div>
@@ -187,6 +190,117 @@ const About = () => {
           Reach Out to Us
         </a>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-300 py-12 mt-16 rounded-t-3xl">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6">
+          {/* Contact */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Contact</h3>
+            <p className="flex items-center gap-2">
+              📞 <a href="tel:+919121222836">+91 9121222836</a>
+            </p>
+          </div>
+
+          {/* Links */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><a href="/" className="hover:text-indigo-400">Home</a></li>
+              <li><a href="/about" className="hover:text-indigo-400">About Us</a></li>
+              <li><a href="/services" className="hover:text-indigo-400">Services</a></li>
+              <li><a href="/blogs" className="hover:text-indigo-400">Blogs</a></li>
+              <li><a href="/career" className="hover:text-indigo-400">Career</a></li>
+              <li><a href="/partners" className="hover:text-indigo-400">Partners</a></li>
+              <li><a href="/contact" className="hover:text-indigo-400">Contact Us</a></li>
+            </ul>
+          </div>
+
+          {/* Address */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Address</h3>
+            <a 
+              href="https://www.google.com/maps/place/Qwipo+(Xavica+Software+Solutions+Pvt+Ltd)/@17.443468,78.3910361,17z/data=!3m1!4b1!4m6!3m5!1s0x3bcb9bccdcd5863b:0xf0db7202a534cc54!8m2!3d17.443468!4d78.393611!16s%2Fg%2F11kynb4h4t?entry=ttu&g_ep=EgoyMDI1MDkyNC4wIKXMDSoASAFQAw%3D%3D" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400 block"
+            >
+              Divyasree Trinity, Isprout Co-working Space,<br/>
+              7th Floor, A-Wing, Plot No.5, at Hitech City Layout,<br/>
+              Survey No 64(Part) Madhapur Village,<br/>
+              Serilingampally Mandal, R R District,<br/>
+              Hyderabad Telangana, 500081
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm">
+          <p>© 2024 Qwipo. All rights reserved</p>
+          <p className="mt-2">
+            Cookie Settings, Anti-Spam, Privacy, User agreement, Legal Notice and Responsible Disclosure
+          </p>
+          {/* Social Icons */}
+          <div className="flex justify-center gap-4 mt-4">
+            <a 
+              href="https://www.linkedin.com/company/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              LinkedIn
+            </a>
+            <a 
+              href="https://www.facebook.com/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              Facebook
+            </a>
+            <a 
+              href="https://www.instagram.com/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              Instagram
+            </a>
+            <a 
+              href="https://twitter.com/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              Twitter
+            </a>
+            <a 
+              href="https://www.pinterest.com/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              Pinterest
+            </a>
+            <a 
+              href="https://apps.apple.com/app/qwipo" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              App Store
+            </a>
+            <a 
+              href="https://play.google.com/store/search?q=qwipo&c=apps&hl=en" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-400"
+            >
+              Google Play
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
