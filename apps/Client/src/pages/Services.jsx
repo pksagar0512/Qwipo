@@ -12,7 +12,22 @@ import solution2 from "../assets/solution2.png";
 import solution3 from "../assets/solution3.png"; 
 import solution4 from "../assets/solution4.png"; 
 import solution5 from "../assets/solution5.png"; 
-import solution6 from "../assets/solution6.png"; 
+import solution6 from "../assets/solution6.png";
+import { 
+  FaPhoneAlt, 
+  FaLinkedin, 
+  FaFacebook, 
+  FaInstagram, 
+  FaTwitter, 
+  FaPinterest, 
+  FaApple 
+} from "react-icons/fa";
+
+import { SiGoogleplay as FaGooglePlay } from "react-icons/si"; // Google Play icon
+
+import logo from "../assets/logo.png"; // adjust path if needed
+
+
 import "../styles/services.css";
 
 const services = [
@@ -169,6 +184,80 @@ const Services = () => {
           ))}
         </div>
       </div>
+      <div className="cta-section">
+        <h2>Unleash Limitless Business Growth</h2>
+        <button className="cta-button">Join Qwipo</button>
+      </div>
+    
+      {/* Footer */}
+<footer className="footer">
+  <div className="footer-container">
+    {/* Left Side */}
+    <div className="footer-left">
+      <div className="footer-logo">
+        <img src={logo} alt="Qwipo Logo" />
+      
+      </div>
+      <p className="footer-phone">
+        <FaPhoneAlt /> +91 9121222836
+      </p>
+      <div className="footer-cta">
+        <p>Ready to work?</p>
+        <a href="/contact" className="footer-talk">
+          Let's Talk →
+        </a>
+      </div>
+    </div>
+
+    {/* Middle Links */}
+    <div className="footer-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/blogs">Blogs</a></li>
+        <li><a href="/career">Career</a></li>
+        <li><a href="/partners">Partners</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+      </ul>
+      <ul>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms of Use</a></li>
+      </ul>
+    </div>
+
+    {/* Address */}
+    <div className="footer-address">
+      <h3>Address</h3>
+      <p><strong>Corporate Office:</strong></p>
+      <p>Divyasree Trinity, Isprout Co-working Space,</p>
+      <p>7th Floor, A-Wing, Plot No.5, at Hitech City Layout,</p>
+      <p>Survey No 64(Part) Madhapur Village,</p>
+      <p>Serilingampally Mandal, R R District.</p>
+      <p>Hyderabad Telangana, 500081</p>
+
+      {/* Social Icons */}
+      <div className="footer-social">
+        <a href="#"><FaLinkedin /></a>
+        <a href="#"><FaFacebook /></a>
+        <a href="#"><FaInstagram /></a>
+        <a href="#"><FaTwitter /></a>
+        <a href="#"><FaPinterest /></a>
+        <a href="#"><FaApple /></a>
+        <a href="#"><FaGooglePlay /></a>
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom */}
+  <div className="footer-bottom">
+    <p>© 2024 Qwipo. All rights reserved</p>
+    <p>
+      Cookie Settings, Anti-Spam, Privacy, User agreement, Legal Notice and Responsible Disclosure
+    </p>
+  </div>
+</footer>
+
     </section>
   );
 };

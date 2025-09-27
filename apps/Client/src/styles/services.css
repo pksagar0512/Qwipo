@@ -36,13 +36,13 @@
   padding: 40px 25px;
   flex: 1;           /* each box takes equal width */
   max-width: none;   /* remove width restriction */
-  box-shadow: 0 4px 15px rgba(92, 59, 184, 0.363);
+  box-shadow: 0 4px 15px rgba(21, 6, 60, 0.363);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .service-box:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(92, 59, 184, 0.363);
+  box-shadow: 0 8px 20px rgba(108, 69, 213, 0.363);
 }
 
 /* Icon styling */
@@ -140,7 +140,7 @@
   height: 600px;  /* fixed height */
   object-fit: contain;
   border-radius: 16px;
-  box-shadow: 0 6px 15px #;
+  box-shadow: 0 6px 15px #051833;
 }
 
 /* Responsive for smaller screens */
@@ -204,7 +204,7 @@
   height: 600px;  /* fixed height */
   object-fit: contain;
   border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(92, 59, 184, 0.363);
+  box-shadow: 0 6px 15px #051833;
 }
 
 /* Responsive for smaller screens */
@@ -266,13 +266,13 @@
   border-radius: 12px;
   padding: 30px 20px;
   text-align: left;
-  box-shadow: 0 4px 15px rgba(92, 59, 184, 0.363);
+  box-shadow: 0 4px 15px rgba(18, 4, 57, 0.363);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .benefit-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 8px 22px rgba(92, 59, 184, 0.363);
+  box-shadow: 0 8px 22px rgba(108, 69, 213, 0.363);
 }
 
 .benefit-icon {
@@ -292,4 +292,158 @@
   font-size: 0.95rem;
   color: #ffffff;
   line-height: 1.5;
+}
+/* Call To Action Section */
+.cta-section {
+  background: #242e3b;
+  border-radius: 20px;
+  padding: 60px 20px;
+  text-align: center;
+  margin: 50px auto;
+  max-width: 1200px;
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.cta-button {
+  background: #3b3b9f;
+  color: white;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #2a2a7a;
+}
+/* ================= Footer Section ================= */
+.footer {
+  background-color: #1c1f26; /* dark background */
+  color: #fff;
+  padding: 60px 40px 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 100px;
+  height: 60px;
+}
+
+
+
+.footer-phone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+.footer-phone svg {
+  font-size: 22px;
+}
+
+.footer-links h4,
+.footer-address h4 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.footer-links ul li a:hover {
+  color: #a855f7; /* purple hover */
+}
+
+.footer-address p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.footer-social a {
+  font-size: 20px;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.footer-social a:hover {
+  color: #a855f7;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 40px;
+  padding-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-bottom a {
+  color: #a855f7;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+  .footer {
+    text-align: center;
+  }
+  .footer-social {
+    justify-content: center;
+  }
 }
