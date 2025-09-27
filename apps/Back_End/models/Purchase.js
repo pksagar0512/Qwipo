@@ -1,12 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const purchaseSchema = mongoose.Schema(
-  {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  },
-  { timestamps: true }
-);
+const purchaseSchema = new mongoose.Schema({
+  retailerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  brandName: String,
+  products: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      quantity: Number,
+    },
+  ],
+  paymentMode: String,
+  status: { type: String, default: "pending" },
+});
 
-const Purchase = mongoose.model('Purchase', purchaseSchema);
-export default Purchase;
+export default mongoose.model("Purchase", purchaseSchema);

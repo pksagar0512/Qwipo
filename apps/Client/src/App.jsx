@@ -10,27 +10,38 @@ import Partners from "./pages/Partners.jsx";
 import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
-import Profile from "./pages/Profile.jsx";
-import BrandProducts from "./pages/BrandProducts.jsx"; // ✅ New
+import Profile from "./pages/Profile.jsx"; // ✅ Retailer Dashboard
+import BrandProducts from "./pages/BrandProducts.jsx";
+import ManufacturerDashboard from "./pages/ManufacturerDashboard.jsx";
 
 function App() {
   return (
     <Router>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/career" element={<Career />} />
-          <Route path="/partners" element={<Partners />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/brand/:brandName" element={<BrandProducts />} /> {/* ✅ New */}
-        </Routes>
-      </MainLayout>
+      <Routes>
+        {/* ✅ Public Pages with Layout */}
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/about" element={<MainLayout><About /></MainLayout>} />
+        <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+        <Route path="/blogs" element={<MainLayout><Blogs /></MainLayout>} />
+        <Route path="/career" element={<MainLayout><Career /></MainLayout>} />
+        <Route path="/partners" element={<MainLayout><Partners /></MainLayout>} />
+        <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
+        <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+        <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
+
+        {/* ✅ Role-Based Dashboards with Layout */}
+        <Route
+          path="/manufacturer-dashboard"
+          element={<MainLayout><ManufacturerDashboard /></MainLayout>}
+        />
+        <Route
+          path="/profile"
+          element={<MainLayout><Profile /></MainLayout>}
+        />
+
+        {/* ✅ Retailer Brand View */}
+        <Route path="/brand/:brandName" element={<MainLayout><BrandProducts /></MainLayout>} />
+      </Routes>
     </Router>
   );
 }

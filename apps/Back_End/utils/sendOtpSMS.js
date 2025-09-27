@@ -6,13 +6,13 @@ dotenv.config();
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 /**
- * Sends OTP via SMS using Twilio Trial Account
+ * Sends OTP via SMS using Twilio
  * @param {string} number - Mobile number in +91XXXXXXXXXX format
  * @param {number} otp - The OTP to send
  */
 export const sendOtpSMS = async (number, otp) => {
   if (!/^\+91\d{10}$/.test(number)) {
-    throw new Error('Invalid mobile number. Use +91XXXXXXXXXX');
+    throw new Error('Invalid mobile number. Use +91XXXXXXXXXX format');
   }
 
   try {
@@ -24,11 +24,7 @@ export const sendOtpSMS = async (number, otp) => {
 
     console.log(`✅ OTP SMS sent to ${number}`);
   } catch (err) {
-    if (err.message.includes('unverified')) {
-      console.warn(`⚠️ Twilio trial limitation: ${number} is not verified.`);
-    } else {
-      console.error('❌ SMS error:', err.message);
-    }
+    console.error('❌ SMS error:', err.message);
     throw err;
   }
 };

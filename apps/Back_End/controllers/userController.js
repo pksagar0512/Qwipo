@@ -1,125 +1,108 @@
-import User from '../models/User.js';
-import generateToken from '../utils/generateToken.js';
-import { sendOtpSMS } from '../utils/sendOtpSMS.js';
-import { sendWhatsAppMessage } from '../utils/sendWhatsApp.js';
+import User from "../models/User.js";
+import generateToken from "../utils/generateToken.js";
+import { sendOtpSMS } from "../utils/sendOtpSMS.js";
 
-// ✅ Step 1: Pre-register user and send OTP via SMS
-export const preRegisterUser = async (req, res) => {
+const otpStore = new Map(); // Temporary in-memory store
+
+// ✅ Step 1: Send OTP only
+export const sendOtpToUser = async (req, res) => {
+  const { email, whatsapp } = req.body;
+
   try {
-    const { name, email, password, whatsapp } = req.body;
-
     const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: 'User already exists' });
+    if (userExists) return res.status(400).json({ message: "User already exists" });
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpires = Date.now() + 5 * 60 * 1000;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    otpStore.set(email, { otp, userData: req.body });
 
-    const fullNumber = whatsapp.startsWith('+91') ? whatsapp : `+91${whatsapp}`;
-
-    req.app.locals.pendingUser = { name, email, password, whatsapp: fullNumber, otp, otpExpires };
-
-    await sendOtpSMS(fullNumber, otp);
-
-    res.json({ message: 'OTP sent. Please verify to complete registration.' });
-  } catch (error) {
-    console.error('❌ Pre-registration error:', error.message);
-    res.status(500).json({ message: 'Server error during pre-registration' });
+    await sendOtpSMS(whatsapp, otp);
+    res.status(200).json({ message: "OTP sent via SMS", otpSent: true });
+  } catch (err) {
+    console.error("❌ OTP send error:", err.message);
+    res.status(500).json({ message: "Failed to send OTP" });
   }
 };
 
-// ✅ Step 2: Verify OTP and create user + send WhatsApp welcome
-export const verifyOtp = async (req, res) => {
+// ✅ Step 2: Verify OTP and create user
+export const verifyOtpAndRegister = async (req, res) => {
+  const { email, otp } = req.body;
+  const stored = otpStore.get(email);
+
+  if (!stored || parseInt(otp) !== stored.otp) {
+    return res.status(401).json({ message: "Invalid OTP" });
+  }
+
+  const {
+    name,
+    password,
+    whatsapp,
+    role,
+    brandName,
+    gstNumber,
+    category,
+    retailerType,
+  } = stored.userData;
+
   try {
-    const { email, otp } = req.body;
-    const pending = req.app.locals.pendingUser;
-
-    if (!pending || pending.email !== email) {
-      return res.status(400).json({ message: 'No pending registration found' });
-    }
-
-    if (pending.otp !== otp || Date.now() > pending.otpExpires) {
-      return res.status(400).json({ message: 'Invalid or expired OTP' });
-    }
-
     const user = await User.create({
-      name: pending.name,
-      email: pending.email,
-      password: pending.password,
-      whatsapp: pending.whatsapp,
+      name,
+      email,
+      password,
+      whatsapp,
+      role,
+      brandName: role === "manufacturer" ? brandName : undefined,
+      gstNumber: role === "manufacturer" ? gstNumber : undefined,
+      category: role === "manufacturer" ? category : undefined,
+      retailerType: role === "retailer" ? retailerType : undefined,
+      isVerified: true,
     });
 
-    await sendWhatsAppMessage(pending.whatsapp, user.name);
-
-    req.app.locals.pendingUser = null;
+    otpStore.delete(email);
 
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       whatsapp: user.whatsapp,
+      role: user.role,
+      brandName: user.brandName,
+      category: user.category,
+      retailerType: user.retailerType,
       token: generateToken(user._id),
-      message: 'OTP verified. Registration complete. Welcome to Qwipo!',
     });
-  } catch (error) {
-    console.error('❌ OTP verification error:', error.message);
-    res.status(500).json({ message: 'Server error during OTP verification' });
+  } catch (err) {
+    console.error("❌ Registration error:", err.message);
+    res.status(500).json({ message: "Failed to create user" });
   }
 };
 
-// ✅ Step 3: Login → Send OTP via SMS
-export const authUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+// ✅ Step 3: Login without OTP
+export const authUserWithoutOtp = async (req, res) => {
+  const { email, password } = req.body;
 
+  try {
+    const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpires = Date.now() + 5 * 60 * 1000;
-
-    const fullNumber = user.whatsapp.startsWith('+91') ? user.whatsapp : `+91${user.whatsapp}`;
-
-    req.app.locals.pendingLogin = { email, otp, otpExpires };
-
-    await sendOtpSMS(fullNumber, otp);
-
-    res.json({ message: 'OTP sent via SMS. Please verify to complete login.' });
-  } catch (error) {
-    console.error('❌ Login error:', error.message);
-    res.status(500).json({ message: 'Server error during login' });
-  }
-};
-
-// ✅ Step 4: Verify login OTP and complete login
-export const verifyLoginOtp = async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    const pending = req.app.locals.pendingLogin;
-
-    if (!pending || pending.email !== email) {
-      return res.status(400).json({ message: 'No pending login found' });
+    if (!user.isVerified) {
+      return res.status(403).json({ message: "User not verified. Complete OTP first." });
     }
-
-    if (pending.otp !== otp || Date.now() > pending.otpExpires) {
-      return res.status(401).json({ message: 'Invalid or expired OTP' });
-    }
-
-    const user = await User.findOne({ email });
-
-    req.app.locals.pendingLogin = null;
 
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       whatsapp: user.whatsapp,
+      role: user.role,
+      brandName: user.brandName,
+      category: user.category,
+      retailerType: user.retailerType,
       token: generateToken(user._id),
-      message: `Welcome back, ${user.name}!`,
     });
-  } catch (error) {
-    console.error('❌ OTP verification error:', error.message);
-    res.status(500).json({ message: 'Server error during OTP verification' });
+  } catch (err) {
+    console.error("❌ Login error:", err.message);
+    res.status(500).json({ message: "Server error during login" });
   }
 };
