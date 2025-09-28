@@ -5,7 +5,7 @@
 }
 
 .services-container {
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -20,18 +20,18 @@
 
 .services-list {
   display: flex;
-  justify-content: space-between; 
-  flex-wrap: nowrap;              
+  justify-content: space-between;
+  flex-wrap: nowrap;
   width: 100%;
-  gap: 30px;                     
+  gap: 30px;
 }
 
 .service-box {
   background: #1b2739;
   border-radius: 10px;
   padding: 40px 25px;
-  flex: 1;           
-  max-width: none;   
+  flex: 1;
+  max-width: none;
   box-shadow: 0 4px 15px rgba(21, 6, 60, 0.363);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -67,16 +67,17 @@
   }
 
   .service-box {
-    flex: 1 1 45%; 
+    flex: 1 1 45%;
     margin-bottom: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .service-box {
-    flex: 1 1 100%; 
+    flex: 1 1 100%;
   }
 }
+
 .phone-mockup {
   flex: 1 1 320px;
   max-width: 400px;
@@ -89,6 +90,7 @@
   opacity: 1;
   transform: translateY(0);
 }
+
 .float-section {
   display: flex;
   justify-content: space-between;
@@ -105,7 +107,7 @@
 
 
 .text-content {
-  flex: 1; 
+  flex: 1;
   color: #e0dddd;
 }
 
@@ -127,8 +129,8 @@
 }
 
 .image-content img {
-  width: 300px;   
-  height: 600px;  
+  width: 300px;
+  height: 600px;
   object-fit: contain;
   border-radius: 16px;
   box-shadow: 0 6px 15px #051833;
@@ -168,7 +170,7 @@
 
 
 .textt-content {
-  flex: 1; 
+  flex: 1;
   color: #ffffff;
 }
 
@@ -190,8 +192,8 @@
 }
 
 .imagee-content img {
-  width: 300px;   
-  height: 600px;  
+  width: 300px;
+  height: 600px;
   object-fit: contain;
   border-radius: 16px;
   box-shadow: 0 6px 15px #051833;
@@ -314,7 +316,7 @@
 }
 
 .footer {
-  background-color: #1c1f26; 
+  background-color: #1c1f26;
   color: #fff;
   padding: 60px 40px 20px;
   font-family: 'Inter', sans-serif;
@@ -375,7 +377,7 @@
 }
 
 .footer-links ul li a:hover {
-  color: #a855f7; 
+  color: #a855f7;
 }
 
 .footer-address p {
@@ -427,9 +429,11 @@
   .footer-container {
     grid-template-columns: 1fr;
   }
+
   .footer {
     text-align: center;
   }
+
   .footer-social {
     justify-content: center;
   }
