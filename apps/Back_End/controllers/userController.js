@@ -3,7 +3,7 @@ import generateToken from '../utils/generateToken.js';
 import { sendOtpSMS } from '../utils/sendOtpSMS.js';
 import { sendWhatsAppMessage } from '../utils/sendWhatsApp.js';
 
-// ✅ Step 1: Pre-register user and send OTP via SMS
+
 export const preRegisterUser = async (req, res) => {
   try {
     const { name, email, password, whatsapp } = req.body;
@@ -27,7 +27,7 @@ export const preRegisterUser = async (req, res) => {
   }
 };
 
-// ✅ Step 2: Verify OTP and create user + send WhatsApp welcome
+
 export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -66,7 +66,7 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-// ✅ Step 3: Login → Send OTP via SMS
+
 export const authUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -92,7 +92,7 @@ export const authUser = async (req, res) => {
   }
 };
 
-// ✅ Step 4: Verify login OTP and complete login
+
 export const verifyLoginOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
