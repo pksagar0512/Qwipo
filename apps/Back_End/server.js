@@ -8,6 +8,8 @@ import cors from 'cors';
 import brandRoutes from "./routes/brandRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import debugRoutes from "./routes/debugRoutes.js";
+import recommendationRoutes from "./routes/recommendationRoutes.js";
+
 
 
 
@@ -38,6 +40,8 @@ app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/debug", debugRoutes);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/recommendations", recommendationRoutes);
+
 
 
 // ✅ Error handling
