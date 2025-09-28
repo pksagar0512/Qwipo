@@ -11,6 +11,7 @@ const partnerCompanies = [
       { name: "Paneer", price: 200 },
     ],
   },
+
   {
     name: "TechSupply",
     category: "Electronics",
@@ -35,7 +36,9 @@ const partnerCompanies = [
 
 export default function Profile() {
   return (
-    <div className="p-6 pt-20">   {/* added pt-20 */}
+    <div className="p-6 pt-20">
+      {" "}
+      {/* added pt-20 */}
       <h1 className="text-3xl font-bold mb-6">Our Partner Brands</h1>
       <ul className="space-y-3">
         {partnerCompanies.map((brand) => (
