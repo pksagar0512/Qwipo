@@ -13,6 +13,7 @@ export default function Profile() {
   const [paymentMode, setPaymentMode] = useState("creditCard");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [productSuggestions, setProductSuggestions] = useState({});
 
   useEffect(() => {
     if (category) {
@@ -27,6 +28,7 @@ export default function Profile() {
     setSelectedBrand(brandName);
     setMessage("");
     setError("");
+    setProductSuggestions({});
 
     try {
       const res = await fetch(`http://localhost:5000/api/products?brand=${brandName}`);
@@ -38,8 +40,27 @@ export default function Profile() {
     }
   };
 
-  const handleQuantityChange = (productId, qty) => {
+  const handleQuantityChange = async (productId, qty) => {
     setQuantities({ ...quantities, [productId]: qty });
+
+    const product = products.find((p) => p._id === productId);
+    if (product && qty > 0) {
+      try {
+        const res = await fetch(`http://localhost:5000/api/recommendations/${product.name}`);
+        const data = await res.json();
+        setProductSuggestions((prev) => ({
+          ...prev,
+          [productId]: data.recommendations || [],
+        }));
+      } catch {
+        console.error("Failed to fetch recommendations");
+      }
+    } else {
+      setProductSuggestions((prev) => ({
+        ...prev,
+        [productId]: [],
+      }));
+    }
   };
 
   const handlePlaceOrder = async () => {
@@ -80,6 +101,7 @@ export default function Profile() {
         setProducts([]);
         setSelectedBrand(null);
         setQuantities({});
+        setProductSuggestions({});
       } else {
         setError(data.message || "Order failed");
       }
@@ -121,32 +143,57 @@ export default function Profile() {
           {products.length === 0 ? (
             <p className="text-red-400">No products found for brand: {selectedBrand}</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {products.map((product) => (
-                <div key={product._id} className="bg-gray-800 p-4 rounded flex items-center gap-4">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-24 h-24 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold">{product.name}</h3>
-                    <p className="text-sm text-gray-400">₹{product.price}</p>
+                <div key={product._id} className="bg-gray-800 p-4 rounded-lg shadow-lg">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-24 h-24 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold">{product.name}</h3>
+                      <p className="text-gray-400">₹{product.price}</p>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="Qty"
+                      value={quantities[product._id] || ""}
+                      onChange={(e) =>
+                        handleQuantityChange(product._id, parseInt(e.target.value))
+                      }
+                      className="w-20 px-2 py-1 rounded bg-gray-700 text-white"
+                    />
                   </div>
-                  <input
-                    type="number"
-                    min="0"
-                    placeholder="Qty"
-                    value={quantities[product._id] || ""}
-                    onChange={(e) => handleQuantityChange(product._id, parseInt(e.target.value))}
-                    className="w-20 px-2 py-1 rounded bg-gray-700 text-white"
-                  />
+
+                  {productSuggestions[product._id]?.length > 0 && (
+                    <div className="mt-4 bg-gradient-to-r from-yellow-700 to-orange-600 p-4 rounded-lg">
+                      <h4 className="text-white font-semibold mb-2">🔥 Perfect Pairings</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {productSuggestions[product._id].map((item) => (
+                          <div key={item._id} className="bg-gray-900 p-3 rounded flex items-center gap-4">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                            <div>
+                              <h5 className="text-white font-semibold">{item.name}</h5>
+                              <p className="text-gray-400 text-sm">₹{item.price}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           )}
 
-          <div className="mt-4">
+          <div className="mt-6">
             <label className="block text-sm mb-1">Select Payment Method:</label>
             <select
               value={paymentMode}
@@ -166,7 +213,10 @@ export default function Profile() {
               Place Order (Pay 50%)
             </button>
             <button
-              onClick={() => setSelectedBrand(null)}
+              onClick={() => {
+                setSelectedBrand(null);
+                setProductSuggestions({});
+              }}
               className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded"
             >
               Back to Brands
