@@ -85,7 +85,6 @@ const benefits = [
 const Services = () => {
   return (
     <section className="services-section">
-      {/* Services List */}
       <div className="services-container">
         <h2 className="services-heading">Discover the Revolutionary QWIPO Platform</h2>
         <div className="services-list">
@@ -113,7 +112,6 @@ const Services = () => {
     </div>
   </div>
 
-  {/* Second block – Image on left (phoneImage2) */}
   <div className="float-section image-left">
     <div className="image-content">
       <img src={phoneImage2} alt="Customer Mobile App" />
@@ -137,7 +135,6 @@ const Services = () => {
     </div>
   </div>
 
-  {/* Second block – Image on left (phoneImage2) */}
   <div className="floatt-section image-left">
     <div className="imagee-content">
       <img src={phoneImage4} alt="Customer Mobile App" />

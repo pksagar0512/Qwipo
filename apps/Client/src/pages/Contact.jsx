@@ -11,7 +11,6 @@ export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Here you can send data to your backend via fetch/axios
     const contactData = { firstName, lastName, email, phone, message };
     console.log("Contact query submitted:", contactData);
 
