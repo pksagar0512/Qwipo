@@ -22,10 +22,10 @@ export const sendWhatsappMessage = async (number, message) => {
       body: message,
     });
 
-    console.log('✅ WhatsApp message sent:', response.sid);
+    console.log('WhatsApp message sent:', response.sid);
     return response.sid;
   } catch (error) {
-    console.error('❌ WhatsApp error:', error.message);
+    console.error('WhatsApp error:', error.message);
     throw error;
   }
 };

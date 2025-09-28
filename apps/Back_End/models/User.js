@@ -8,20 +8,18 @@ const userSchema = new mongoose.Schema({
   whatsapp: { type: String, required: true },
   role: { type: String, enum: ['manufacturer', 'retailer'], required: true },
   category: { type: String },
-  brandName: { type: String },       // for manufacturer
-  gstNumber: { type: String },       // for manufacturer
-  retailerType: { type: String },    // for retailer
+  brandName: { type: String },       
+  gstNumber: { type: String },       
+  retailerType: { type: String },    
   otp: { type: String },
   otpExpires: { type: Date },
   isVerified: { type: Boolean, default: false },
 });
 
-// 🔐 Compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// 🔒 Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);

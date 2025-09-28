@@ -11,7 +11,6 @@ const MainLayout = ({ children }) => {
     const protectedRoutes = ["/manufacturer-dashboard", "/profile"];
     const currentPath = window.location.pathname;
 
-    // redirect if no user and trying to access a protected route
     if (!user && protectedRoutes.includes(currentPath)) {
       navigate("/login");
     }

@@ -22,9 +22,9 @@ export const sendOtpSMS = async (number, otp) => {
       to: number,
     });
 
-    console.log(`✅ OTP SMS sent to ${number}`);
+    console.log(`OTP SMS sent to ${number}`);
   } catch (err) {
-    console.error('❌ SMS error:', err.message);
+    console.error('SMS error:', err.message);
     throw err;
   }
 };

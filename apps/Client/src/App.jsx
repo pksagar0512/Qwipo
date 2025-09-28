@@ -10,7 +10,7 @@ import Partners from "./pages/Partners.jsx";
 import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
-import Profile from "./pages/Profile.jsx"; // ✅ Retailer Dashboard
+import Profile from "./pages/Profile.jsx"; 
 import BrandProducts from "./pages/BrandProducts.jsx";
 import ManufacturerDashboard from "./pages/ManufacturerDashboard.jsx";
 
@@ -18,7 +18,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* ✅ Public Pages with Layout */}
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/about" element={<MainLayout><About /></MainLayout>} />
         <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
@@ -29,7 +28,6 @@ function App() {
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
         <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
 
-        {/* ✅ Role-Based Dashboards with Layout */}
         <Route
           path="/manufacturer-dashboard"
           element={<MainLayout><ManufacturerDashboard /></MainLayout>}
@@ -39,7 +37,6 @@ function App() {
           element={<MainLayout><Profile /></MainLayout>}
         />
 
-        {/* ✅ Retailer Brand View */}
         <Route path="/brand/:brandName" element={<MainLayout><BrandProducts /></MainLayout>} />
       </Routes>
     </Router>

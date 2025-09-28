@@ -16,7 +16,6 @@ const Navbar = () => {
       <div className="text-2xl font-bold text-purple-400">Qwipo</div>
 
       <div className="flex gap-6 items-center">
-        {/* Public Links */}
         <Link to="/">Home</Link>
         <Link to="/about">About Us</Link>
         <Link to="/services">Services</Link>
@@ -25,7 +24,6 @@ const Navbar = () => {
         <Link to="/partners">Partners</Link>
         <Link to="/contact">Contact</Link>
 
-        {/* Auth Buttons */}
         {user ? (
           <button
             onClick={handleLogout}
