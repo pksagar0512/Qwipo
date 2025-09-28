@@ -5,6 +5,7 @@ const Partners = () => {
   @keyframes slide {
     0% { transform: translateX(0); }          
     100% { transform: translateX(-50%); }     
+  }
   .animate-slide {
     display: flex;
     width: max-content;
@@ -120,7 +121,7 @@ const Partners = () => {
           </div>
 
           <div className="purple text-white p-8 flex justify-center gap-6 mt-6">
-            <a href="Contact.jsx">
+            <a href="/contact">
             <button className="!bg-purple-600 hover:!bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg shadow">
               Partner With Us
             </button>
