@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState(() => {
-    // Load from localStorage on first render
+    
     const saved = localStorage.getItem("blogs");
     return saved ? JSON.parse(saved) : [];
   });
@@ -11,13 +11,13 @@ const Blogs = () => {
   const [newBlog, setNewBlog] = useState({ title: "", description: "", photo: "" });
   const [selectedBlog, setSelectedBlog] = useState(null);
 
-  // Save blogs to localStorage whenever blogs change
+
   useEffect(() => {
     localStorage.setItem("blogs", JSON.stringify(blogs));
   }, [blogs]);
 
   const handleAddBlog = () => {
-    // Prevent empty posts
+    
     if (newBlog.title.trim() || newBlog.description.trim() || newBlog.photo.trim()) {
       const updated = [{ ...newBlog }, ...blogs];
       setBlogs(updated);
@@ -31,9 +31,9 @@ const Blogs = () => {
       <h1 className="text-3xl font-bold">Blogs Page</h1>
       <p className="text-gray-300">Latest insights and updates from Qwipo.</p>
 
-      {/* Blog Grid */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        {/* Create Post Card */}
+       
         <div
           className="flex flex-col items-center justify-center bg-white/10 p-6 rounded-lg cursor-pointer hover:bg-white/20 transition"
           onClick={() => setShowForm(true)}
@@ -42,7 +42,7 @@ const Blogs = () => {
           <p className="mt-2 text-lg">Create Post</p>
         </div>
 
-        {/* Blog Cards */}
+        
         {blogs.map((blog, index) => (
           <div key={index} className="bg-white/10 p-4 rounded-lg flex flex-col">
             {blog.photo && (
@@ -67,7 +67,7 @@ const Blogs = () => {
         ))}
       </div>
 
-      {/* Modal Form */}
+     
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/70">
           <div className="bg-gray-900 p-6 rounded-lg w-96 text-white">
@@ -113,7 +113,7 @@ const Blogs = () => {
         </div>
       )}
 
-      {/* Full Blog Modal */}
+      
       {selectedBlog && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/70">
           <div className="bg-gray-900 p-6 rounded-lg w-[600px] max-h-[80vh] overflow-y-auto text-white">

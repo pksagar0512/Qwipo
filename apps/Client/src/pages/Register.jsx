@@ -9,7 +9,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState(1); // 1 = pre-register, 2 = verify OTP
+  const [step, setStep] = useState(1); 
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");

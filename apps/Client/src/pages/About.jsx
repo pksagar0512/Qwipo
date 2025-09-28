@@ -1,7 +1,7 @@
 const About = () => {
   return (
     <div className="pt-24 px-6 bg-gray-900 text-white min-h-screen space-y-24">
-      {/* Heading */}
+      
       <section className="text-center space-y-6 max-w-5xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-indigo-400">
           Driving Growth in India’s E-Commerce Market
@@ -17,7 +17,6 @@ const About = () => {
         </p>
       </section>
 
-      {/* Vendors Challenges */}
       <section className="space-y-6 max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-semibold text-indigo-400">
           Overcoming Vendors’ Challenges
@@ -29,7 +28,7 @@ const About = () => {
           overcome these roadblocks and grow.
         </p>
 
-        {/* Challenge Cards */}
+      
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
@@ -97,7 +96,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Empowering Vendors */}
+      
       <section className="flex flex-col lg:flex-row items-center gap-10 max-w-6xl mx-auto">
         <div className="flex-1 space-y-4">
           <h2 className="text-3xl font-semibold text-indigo-400">
@@ -117,7 +116,7 @@ const About = () => {
         />
       </section>
 
-      {/* Mission & Vision */}
+      
       <section className="space-y-6 text-center max-w-5xl mx-auto">
         <h2 className="text-3xl font-semibold text-indigo-400">
           Our Mission & Vision
@@ -142,7 +141,7 @@ const About = () => {
         </p>
       </section>
 
-      {/* Team Section */}
+     
       <section className="space-y-8 text-center max-w-6xl mx-auto">
         <h2 className="text-3xl font-semibold text-indigo-400">
           The Qwipo Team
@@ -172,7 +171,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Call to Action */}
+      
       <section className="text-center space-y-6 max-w-4xl mx-auto bg-gray-800 py-12 rounded-3xl shadow-xl">
         <h2 className="text-3xl font-semibold text-indigo-400">
           Grow with Qwipo
@@ -191,10 +190,10 @@ const About = () => {
         </a>
       </section>
 
-      {/* Footer */}
+      
       <footer className="bg-gray-800 text-gray-300 py-12 mt-16 rounded-t-3xl">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6">
-          {/* Contact */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-4">Contact</h3>
             <p className="flex items-center gap-2">
@@ -202,7 +201,7 @@ const About = () => {
             </p>
           </div>
 
-          {/* Links */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -216,7 +215,7 @@ const About = () => {
             </ul>
           </div>
 
-          {/* Address */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-4">Address</h3>
             <a 
@@ -234,13 +233,13 @@ const About = () => {
           </div>
         </div>
 
-        {/* Bottom Section */}
+        
         <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm">
           <p>© 2024 Qwipo. All rights reserved</p>
           <p className="mt-2">
             Cookie Settings, Anti-Spam, Privacy, User agreement, Legal Notice and Responsible Disclosure
           </p>
-          {/* Social Icons */}
+         
           <div className="flex justify-center gap-4 mt-4">
             <a 
               href="https://www.linkedin.com/company/qwipo" 
