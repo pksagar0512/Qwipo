@@ -1,5 +1,5 @@
 export const recommendationMap = {
-  sherwani: ["jooti", "dupatta"],
+  sherwani: ["Jooti", "dupatta"],
   jam: ["bread", "butter"],
   kurta: ["pyjama", "mojari"],
   jeans: ["belt", "t-shirt"],
