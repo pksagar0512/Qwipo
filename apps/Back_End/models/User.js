@@ -6,11 +6,17 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   whatsapp: { type: String, required: true },
+  role: { type: String, enum: ['manufacturer', 'retailer'], required: true },
+  category: { type: String },
+  brandName: { type: String },       // for manufacturer
+  gstNumber: { type: String },       // for manufacturer
+  retailerType: { type: String },    // for retailer
   otp: { type: String },
   otpExpires: { type: Date },
+  isVerified: { type: Boolean, default: false },
 });
 
-// 🔐 Add method to compare entered password with hashed password
+// 🔐 Compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
