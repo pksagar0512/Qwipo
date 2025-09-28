@@ -5,7 +5,6 @@ const Partners = () => {
   @keyframes slide {
     0% { transform: translateX(0); }          
     100% { transform: translateX(-50%); }     
-  }
   .animate-slide {
     display: flex;
     width: max-content;
@@ -22,7 +21,7 @@ const Partners = () => {
         <p>Collaborate with trusted suppliers and strategic allies.</p>
       </div>
 
-     
+      
       <div className="bg-[#0f172a] text-purple-200 py-16 px-8">
         <h2 className="text-3xl font-bold text-center text-purple-300">
           Partnering for Success and Innovation
