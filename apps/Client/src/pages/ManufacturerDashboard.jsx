@@ -41,7 +41,7 @@ const ManufacturerDashboard = () => {
       await addProduct(productToAdd, token);
       setNewProduct({ name: "", price: "", image: "" });
       setShowForm(false);
-      fetchProducts(); // refresh list
+      fetchProducts(); 
     } catch (err) {
       console.error("Failed to add product", err);
     }

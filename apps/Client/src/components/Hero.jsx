@@ -7,10 +7,10 @@ const Hero = () => (
       Your trusted B2B platform connecting retailers and manufacturers.
     </p>
     <a
-      href="/products"
+      href="/Partners"
       className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-purple-700 transition duration-300 font-semibold"
     >
-      Explore Products
+      Explore Partners
     </a>
   </section>
 );

@@ -6,8 +6,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#1E40AF", // Deep blue
-        accent: "#F59E0B",  // Amber
+        primary: "#1E40AF", 
+        accent: "#F59E0B",  
       },
     },
   },

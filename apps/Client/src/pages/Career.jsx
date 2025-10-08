@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export default function Career() {
-  // Example job openings (later you can fetch from backend)
   const [jobs] = useState([
     {
       id: 1,

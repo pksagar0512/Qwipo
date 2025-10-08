@@ -11,7 +11,6 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Redirect if already logged in
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.role) {
@@ -47,7 +46,6 @@ export default function Login() {
         setUser(data);
         setMessage(`Welcome back, ${data.name}!`);
 
-        // ✅ Immediate redirect after login
         if (data.role === "manufacturer") {
           navigate("/manufacturer-dashboard");
         } else {

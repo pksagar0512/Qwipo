@@ -20,7 +20,6 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Format number to +91XXXXXXXXXX
   const formatWhatsapp = (number) => {
     let num = number.trim();
     if (num.startsWith("0")) num = num.slice(1);

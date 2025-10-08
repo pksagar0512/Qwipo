@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.post("/pre-register", sendOtpToUser);           // Step 1: Send OTP
-router.post("/verify-otp", verifyOtpAndRegister);      // Step 2: Verify and create user
-router.post("/direct-login", authUserWithoutOtp);      // Step 3: Login
+router.post("/pre-register", sendOtpToUser);           
+router.post("/verify-otp", verifyOtpAndRegister);      
+router.post("/direct-login", authUserWithoutOtp);      
 
 export default router;
