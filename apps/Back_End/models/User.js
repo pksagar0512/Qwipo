@@ -8,13 +8,12 @@ const userSchema = new mongoose.Schema({
   whatsapp: { type: String, required: true },
   role: { type: String, enum: ['manufacturer', 'retailer'], required: true },
   category: { type: String },
-  brandName: { type: String },       
-  gstNumber: { type: String },       
-  retailerType: { type: String },    
-  otp: { type: String },
-  otpExpires: { type: Date },
+  brandName: { type: String },
+  brandLogo: { type: String },  // ✅ added field
+  gstNumber: { type: String },
+  retailerType: { type: String },
   isVerified: { type: Boolean, default: false },
-});
+}, { timestamps: true });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);

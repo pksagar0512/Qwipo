@@ -1,10 +1,10 @@
 import Product from "../models/Product.js";
 import User from "../models/User.js";
-import { sendWhatsappMessage } from "../utils/sendWhatsapp.js"; 
+import { sendWhatsappMessage } from "../utils/sendWhatsapp.js";
 
 export const addProduct = async (req, res) => {
   try {
-    const { name, price, image } = req.body;
+    const { name, price, image, colors, sizes, description } = req.body;
     const manufacturerId = req.user._id;
 
     const user = await User.findById(manufacturerId);
@@ -14,12 +14,16 @@ export const addProduct = async (req, res) => {
       name,
       price,
       image,
+      colors,
+      sizes,
+      description,
       category: user.category,
       brand: user.brandName,
       manufacturer: manufacturerId,
+      brandLogo: user.brandLogo || "", // optional: store logo reference on product too
     });
 
-    const retailers = await User.find({ role: "retailer", retailerType: user.category });
+    const retailers = await User.find({ role: "retailer", category: user.category });
     const message = `🆕 New product "${name}" added under brand "${user.brandName}". Check it out now!`;
 
     retailers.forEach(retailer => {
@@ -48,5 +52,47 @@ export const getProductsByManufacturer = async (req, res) => {
   } catch (err) {
     console.error("Fetch products error:", err.message);
     res.status(500).json({ message: "Failed to fetch products" });
+  }
+};
+
+export const getProductsByRetailerCategory = async (req, res) => {
+  try {
+    const retailer = await User.findById(req.user._id);
+    if (!retailer || retailer.role !== "retailer") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Use 'category' field on retailer to fetch matching manufacturers
+    const manufacturers = await User.find({
+      role: "manufacturer",
+      category: retailer.category,
+    });
+
+    const brandNames = manufacturers.map(m => m.brandName);
+
+    const products = await Product.find({
+      brand: { $in: brandNames },
+    });
+
+    res.json(products);
+  } catch (err) {
+    console.error("Retailer product fetch error:", err.message);
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
+};
+
+// NEW: get brands (manufacturers) by category — returns brandName and brandLogo
+export const getBrandsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const brands = await User.find(
+      { role: "manufacturer", category },
+      "brandName brandLogo category"
+    ).sort({ brandName: 1 });
+
+    res.json(brands);
+  } catch (err) {
+    console.error("Fetch brands error:", err.message);
+    res.status(500).json({ message: "Failed to fetch brands" });
   }
 };

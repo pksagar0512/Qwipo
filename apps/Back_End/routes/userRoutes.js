@@ -1,14 +1,10 @@
+// apps/Back_End/routes/userRoutes.js
 import express from "express";
-import {
-  sendOtpToUser,
-  verifyOtpAndRegister,
-  authUserWithoutOtp,
-} from "../controllers/userController.js";
+import { registerUser, authUser } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.post("/pre-register", sendOtpToUser);           
-router.post("/verify-otp", verifyOtpAndRegister);      
-router.post("/direct-login", authUserWithoutOtp);      
+router.post("/register", registerUser);   
+router.post("/login", authUser);          
 
 export default router;
