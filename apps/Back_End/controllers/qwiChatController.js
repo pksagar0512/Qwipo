@@ -2,27 +2,26 @@ import { getSmartRecommendationsForMessage, appendToSession } from "../services/
 
 export const handleQwiChat = async (req, res) => {
   try {
-    const { message, sessionId } = req.body;
-    if (!message) return res.status(400).json({ message: "Missing 'message' in request" });
-
+    const body = req.body || {};
+    const message = body.message || body.query || "";
+    const sessionId = body.sessionId || null;
     const user = req.user || null;
 
-    // store user message in session (optional)
-    const session = await appendToSession(sessionId, "user", message, { userId: user?._id });
+    console.log("⚙️ Reached qwiChat route - body:", Object.keys(body));
 
-    const rec = await getSmartRecommendationsForMessage(message, { user });
+    await appendToSession(sessionId, "user", message, { userId: user?._id });
 
-    // attach session id if created
-    const response = {
-      sessionId: session?.sessionId || sessionId || null,
-      type: rec.type,
-      products: rec.products || [],
-      message: rec.products && rec.products.length ? undefined : (rec.message || "Sorry, I couldn't find anything."),
-    };
+    const recs = await getSmartRecommendationsForMessage(message, { user });
 
-    return res.json(response);
+    const reply = (recs && recs.products && recs.products.length)
+      ? { sessionId: sessionId || (recs.sessionId || null), type: recs.type, products: recs.products }
+      : { sessionId: sessionId || null, type: recs.type || "none", products: [] , message: "Sorry, I couldn't find anything for that." };
+
+    await appendToSession(reply.sessionId, "assistant", reply.message || `returned ${reply.products.length} products`, { meta: { type: reply.type } });
+
+    return res.json(reply);
   } catch (err) {
     console.error("QwiChat error:", err);
-    return res.status(500).json({ message: "Server error in QwiChat" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
