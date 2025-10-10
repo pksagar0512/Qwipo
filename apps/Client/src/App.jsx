@@ -13,6 +13,7 @@ import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx"; 
 import BrandProducts from "./pages/BrandProducts.jsx";
 import ManufacturerDashboard from "./pages/ManufacturerDashboard.jsx";
+import OrderHistory from "./pages/OrderHistory.jsx";
 
 function App() {
   return (
@@ -27,15 +28,16 @@ function App() {
         <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
         <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
+        <Route path="/orders" element={<MainLayout><OrderHistory /></MainLayout>} />
 
         <Route
           path="/manufacturer-dashboard"
           element={<MainLayout><ManufacturerDashboard /></MainLayout>}
         />
         <Route
-          path="/profile"
-          element={<MainLayout><Profile /></MainLayout>}
-        />
+  path="/profile/*"
+  element={<MainLayout><Profile /></MainLayout>}
+/>
 
         <Route path="/brand/:brandName" element={<MainLayout><BrandProducts /></MainLayout>} />
       </Routes>

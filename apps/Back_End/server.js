@@ -11,6 +11,8 @@ import orderRoutes from "./routes/orderRoutes.js";
 import debugRoutes from "./routes/debugRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
+import qwiChatRoutes from "./routes/qwiChatRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -33,15 +35,12 @@ app.use("/api/products", productRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/debug", debugRoutes);
-
-// mount upload route BEFORE static if you want controlled upload responses
 app.use("/api/upload", uploadRoutes);
-
-// serve uploads folder statically (safe path join)
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/qwichat", qwiChatRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

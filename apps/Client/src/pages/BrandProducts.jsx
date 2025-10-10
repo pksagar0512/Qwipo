@@ -42,11 +42,15 @@ export default function BrandProducts({ onOpenProduct }) {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/products?brand=${encodeURIComponent(brandKey)}`);
+        const res = await fetch(`http://localhost:5000/api/products?brand=${encodeURIComponent(brandKey)}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
         const data = await res.json();
         if (Array.isArray(data) && data.length) setProducts(data);
         else {
-          const res2 = await fetch(`http://localhost:5000/api/products/brand/${encodeURIComponent(brandKey)}`);
+          const res2 = await fetch(`http://localhost:5000/api/products/brand/${encodeURIComponent(brandKey)}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
           const data2 = await res2.json();
           setProducts(Array.isArray(data2) ? data2 : []);
         }
@@ -56,9 +60,9 @@ export default function BrandProducts({ onOpenProduct }) {
       } finally { setLoading(false); }
     };
     fetchProducts();
-  }, [brandKey]);
+  }, [brandKey, token]);
 
-  const openModal = (product) => {
+  const openInline = (product) => {
     setSelectedProduct(product);
     setSelectedColor(null);
     setSelectedSize(null);
@@ -66,7 +70,11 @@ export default function BrandProducts({ onOpenProduct }) {
     setQuantities({});
     fetchRecommendations(product.name);
     if (onOpenProduct) onOpenProduct(product);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // scroll to the inline panel (top offset)
+    setTimeout(() => {
+      const el = document.getElementById("brandproduct-details");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
   };
 
   const fetchRecommendations = async (productName) => {
@@ -74,7 +82,9 @@ export default function BrandProducts({ onOpenProduct }) {
     setRecDebug(null);
     if (!productName) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/recommendations/${encodeURIComponent(productName)}`);
+      const url = `http://localhost:5000/api/recommendations/${encodeURIComponent(productName)}?category=${encodeURIComponent(selectedProduct?.category || brand?.category || "")}&brand=${encodeURIComponent(brand?.brandName || brandKey || "")}`;
+      // we'll ignore the above dynamic query if selectedProduct is not yet set; backend tolerates absent params
+      const res = await fetch(`http://localhost:5000/api/recommendations/${encodeURIComponent(productName)}?category=${encodeURIComponent(productName ? (selectedProduct?.category || brand?.category || "") : "")}&brand=${encodeURIComponent(brand?.brandName || brandKey || "")}`);
       const json = await res.json();
       setRecDebug(json);
       const list = Array.isArray(json) ? json : (json?.recommendations || json?.data || []);
@@ -140,18 +150,20 @@ export default function BrandProducts({ onOpenProduct }) {
   const handleRecommendationClick = async (rec) => {
     if (!rec) return;
     if (rec._id) {
-      openModal(rec);
+      openInline(rec);
       return;
     }
     try {
       const byName = typeof rec === "string" ? rec : rec.productName || rec.name;
       if (!byName) return alert("Recommendation has no usable product name");
-      const res = await fetch(`http://localhost:5000/api/products?name=${encodeURIComponent(byName)}`);
+      const res = await fetch(`http://localhost:5000/api/products?name=${encodeURIComponent(byName)}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const data = await res.json();
-      if (Array.isArray(data) && data.length) openModal(data[0]);
+      if (Array.isArray(data) && data.length) openInline(data[0]);
       else {
         const found = products.find(p => p.name.toLowerCase() === String(byName).toLowerCase());
-        if (found) openModal(found);
+        if (found) openInline(found);
         else alert("Recommended product not available as detailed product.");
       }
     } catch (err) {
@@ -175,7 +187,7 @@ export default function BrandProducts({ onOpenProduct }) {
         body: JSON.stringify({ cart, subtotal, gst, total, billNumber })
       });
       if (!res.ok) throw new Error("Order failed");
-      const json = await res.json();
+      await res.json();
       alert("Payment simulated. Order placed.");
       localStorage.removeItem("cart");
       window.dispatchEvent(new Event("cart-updated"));
@@ -306,7 +318,7 @@ export default function BrandProducts({ onOpenProduct }) {
         products.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map(p => (
-              <div key={p._id} className="p-4 bg-gray-800 rounded-xl shadow hover:scale-105 transition cursor-pointer" onClick={() => openModal(p)}>
+              <div key={p._id} className="p-4 bg-gray-800 rounded-xl shadow hover:scale-105 transition cursor-pointer" onClick={() => openInline(p)}>
                 <img src={p.image} alt={p.name} className="w-full h-52 object-cover rounded mb-3" />
                 <div className="flex justify-between items-baseline">
                   <h2 className="text-lg font-semibold">{p.name}</h2>
@@ -320,67 +332,89 @@ export default function BrandProducts({ onOpenProduct }) {
       )}
 
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setSelectedProduct(null)} />
-          <div className="relative bg-gray-900 rounded-xl shadow-xl w-full max-w-4xl p-6 z-60">
-            <div className="flex gap-6 md:gap-8">
-              <img src={selectedProduct.image} alt="" className="w-1/3 h-80 object-cover rounded" />
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
-                    <p className="text-gray-400 mt-1">{selectedProduct.description}</p>
-                    <div className="mt-3 text-xl font-semibold">₹{selectedProduct.price}</div>
+        <div id="brandproduct-details" className="mt-8 w-full max-w-4xl mx-auto bg-gray-900 rounded-xl shadow-xl p-6">
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="md:w-1/3">
+              <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-80 object-cover rounded" />
+            </div>
+
+            <div className="flex-1">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
+                  <p className="text-gray-400 mt-1">{selectedProduct.description}</p>
+                  <div className="mt-3 text-xl font-semibold">₹{selectedProduct.price}</div>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => { setSelectedProduct(null); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="px-3 py-1 bg-gray-700 rounded">Close</button>
+                </div>
+              </div>
+
+              {renderOptionsByCategory(selectedProduct)}
+
+              <div className="mt-4">
+                <div className="font-semibold mb-2">Selected Pairs / Options</div>
+                {selectedProduct.category === "Clothing" ? (
+                  selectedPairs.length === 0 ? <div className="text-gray-400">No pairs added.</div> :
+                  selectedPairs.map(p => (
+                    <div key={`${p.color}-${p.size}`} className="flex items-center gap-3 mb-2">
+                      <div>{p.color} / {p.size}</div>
+                      <input type="number" min="5" step="5" value={quantities[`${p.color}-${p.size}`] || 5} onChange={(e)=>changeQty(p.color,p.size,e.target.value)} className="w-20 px-2 py-1 rounded bg-gray-700" />
+                      <button onClick={()=>removePair(p.color,p.size)} className="text-red-400">Remove</button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-gray-300">
+                    {selectedColor && <div>Option: {selectedColor}</div>}
+                    {selectedSize && <div>Option 2: {selectedSize}</div>}
                   </div>
-                  <button onClick={() => setSelectedProduct(null)} className="px-3 py-1 bg-gray-700 rounded">Close</button>
-                </div>
+                )}
+              </div>
 
-                {renderOptionsByCategory(selectedProduct)}
+              <div className="mt-6 flex gap-3">
+                <button onClick={addToCart} className="px-4 py-2 bg-emerald-600 rounded">Add to Cart</button>
+                <button onClick={() => { setShowPaymentModal(true); }} className="px-4 py-2 bg-amber-500 rounded">Buy Now</button>
+              </div>
 
-                <div className="mt-4">
-                  <div className="font-semibold mb-2">Selected Pairs / Options</div>
-                  {selectedProduct.category === "Clothing" ? (
-                    selectedPairs.length === 0 ? <div className="text-gray-400">No pairs added.</div> :
-                    selectedPairs.map(p => (
-                      <div key={`${p.color}-${p.size}`} className="flex items-center gap-3 mb-2">
-                        <div>{p.color} / {p.size}</div>
-                        <input type="number" min="5" step="5" value={quantities[`${p.color}-${p.size}`] || 5} onChange={(e)=>changeQty(p.color,p.size,e.target.value)} className="w-20 px-2 py-1 rounded bg-gray-700" />
-                        <button onClick={()=>removePair(p.color,p.size)} className="text-red-400">Remove</button>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-gray-300">
-                      {selectedColor && <div>Option: {selectedColor}</div>}
-                      {selectedSize && <div>Option 2: {selectedSize}</div>}
-                    </div>
-                  )}
-                </div>
+              <div className="mt-6">
+                <h3 className="font-semibold mb-2 text-lg">Perfect match & recommendations</h3>
 
-                <div className="mt-6 flex gap-3">
-                  <button onClick={addToCart} className="px-4 py-2 bg-emerald-600 rounded">Add to Cart</button>
-                  <button onClick={() => { setShowPaymentModal(true); }} className="px-4 py-2 bg-amber-500 rounded">Buy Now</button>
-                </div>
-
-                <div className="mt-6">
-                  <h3 className="font-semibold mb-2">Perfect match & recommendations</h3>
-                  {recommendations.length === 0 ? <div className="text-gray-400">No recommendations found.</div> :
-                    <div className="flex gap-4 overflow-x-auto">
-                      {recommendations.map((r, idx) => {
-                        const name = r.name || r.productName || r;
-                        const image = r.image || "/default-logo.png";
-                        return (
-                          <div key={idx} className="min-w-[160px] bg-gray-900 p-2 rounded cursor-pointer" onClick={() => handleRecommendationClick(r)}>
-                            <img src={image} alt={name} className="w-full h-28 object-cover rounded mb-2" />
-                            <div className="text-sm font-semibold">{name}</div>
-                            <div className="text-xs text-gray-400">Perfect match</div>
+                {recommendations.length === 0 ? (
+                  <div className="text-gray-400">No recommendations found.</div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {recommendations.map((r, idx) => {
+                      const name = r.name || r.productName || r;
+                      const image = r.image || "/default-logo.png";
+                      return (
+                        <div
+                          key={idx}
+                          className="flex flex-col bg-gray-800 p-3 rounded hover:bg-gray-700 transition cursor-pointer"
+                          onClick={() => handleRecommendationClick(r)}
+                        >
+                          <img src={image} alt={name} className="w-full h-36 object-cover rounded mb-3" />
+                          <div className="flex-1">
+                            <div className="font-semibold">{name}</div>
+                            {r.price && <div className="text-sm text-gray-400">₹{r.price}</div>}
                           </div>
-                        );
-                      })}
-                    </div>
-                  }
-                  <div className="mt-3 text-xs text-gray-500">Recommendation debug: <pre className="text-xs">{JSON.stringify(recDebug, null, 2)}</pre></div>
-                </div>
+                          <div className="mt-3 flex justify-end">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleRecommendationClick(r); }}
+                              className="px-3 py-1 bg-emerald-600 text-xs rounded hover:bg-emerald-500"
+                            >
+                              View
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
+                <details className="mt-3 text-xs text-gray-500">
+                  <summary className="cursor-pointer text-gray-400">Debug Info</summary>
+                  <pre className="text-xs whitespace-pre-wrap break-all">{JSON.stringify(recDebug, null, 2)}</pre>
+                </details>
               </div>
             </div>
           </div>
